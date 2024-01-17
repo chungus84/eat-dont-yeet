@@ -40,7 +40,7 @@ public class User implements Serializable {
 
     @NotBlank(message = "UserName cannot be blank")
     @NonNull
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true, length = 50)
     private String userName;
 
     @NotBlank(message = "email cannot be blank")
