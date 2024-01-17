@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -14,12 +16,17 @@ import java.time.LocalDate;
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 59833214569778452L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "userid")
+    private String userId = UUID.randomUUID().toString();
 
     @NotBlank(message = "First name cannot be blank")
     @NonNull

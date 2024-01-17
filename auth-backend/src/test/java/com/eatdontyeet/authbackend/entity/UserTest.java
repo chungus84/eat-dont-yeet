@@ -33,8 +33,6 @@ public class UserTest {
         // Arrange & Act
         User user = new User(firstName, lastName, userName, email, password);
 
-        System.out.println(user.getCreatedAt());
-        System.out.println(user.getId());
 
         // Assert
         assertEquals(firstName, user.getFirstName(), "Returned firstName was different from expected");
@@ -43,6 +41,7 @@ public class UserTest {
         assertEquals(userName, user.getUserName(), "Returned userName was different from expected ");
         assertEquals(password, user.getPassword(), "Returned lastName was different from expected ");
         assertNull(user.getId(), "Returned Id should be null");
+        assertNotNull(user.getUserId(), "Returned userId should not be NUll");
         assertEquals(LocalDate.now(), user.getCreatedAt());
 
 
@@ -66,6 +65,7 @@ public class UserTest {
         assertEquals(userName, testUser.getUserName(), "Returned userName was different from expected ");
         assertEquals(password, testUser.getPassword(), "Returned lastName was different from expected ");
         assertNull(testUser.getId(), "Returned Id should be null");
+        assertNotNull(testUser.getUserId(), "Returned userId should not be NUll");
         assertEquals(LocalDate.now(), testUser.getCreatedAt());
 
 

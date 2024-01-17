@@ -50,6 +50,31 @@ public class UserRepositoryTest {
         // Assert
         assertTrue(storedUser.isPresent(), "User Entity should be present");
         assertEquals(storedUser.get().getUserName(), user1.getUserName(), "Returned UserName is different from expected");
+        assertEquals(storedUser.get().getFirstName(), user1.getFirstName(), "Returned FirstName is different from expected");
+        assertEquals(storedUser.get().getLastName(), user1.getLastName(), "Returned LastName is different from expected");
+        assertEquals(storedUser.get().getEmail(), user1.getEmail(), "Returned Email is different from expected");
+        assertEquals(storedUser.get().getUserId(), user1.getUserId(), "Returned UserId is different from expected");
+        assertNotNull(storedUser.get().getId(), "Returned Id should not be null");
+        assertEquals(storedUser.get().getCreatedAt(), user2.getCreatedAt(), "Returned CreatedAt date not as expected");
+
+    }
+
+    @DisplayName("Should return user2 details")
+    @Test
+    void testFindByEmail_WhenGivenEmailOfUser2_ShouldReturnAnOptionalOfUser2() {
+
+        // Act
+        Optional<User> storedUser = userRepository.findByEmail(user2.getEmail());
+
+        // Assert
+        assertTrue(storedUser.isPresent(), "User Entity should be present");
+        assertEquals(storedUser.get().getUserName(), user2.getUserName(), "Returned UserName is different from expected");
+        assertEquals(storedUser.get().getFirstName(), user2.getFirstName(), "Returned FirstName is different from expected");
+        assertEquals(storedUser.get().getLastName(), user2.getLastName(), "Returned LastName is different from expected");
+        assertEquals(storedUser.get().getEmail(), user2.getEmail(), "Returned Email is different from expected");
+        assertEquals(storedUser.get().getUserId(), user2.getUserId(), "Returned UserId is different from expected");
+        assertNotNull(storedUser.get().getId(), "Returned Id should not be null");
+        assertEquals(storedUser.get().getCreatedAt(), user2.getCreatedAt(), "Returned CreatedAt date not as expected");
     }
 
 }
