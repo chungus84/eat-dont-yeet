@@ -133,4 +133,13 @@ public class UserServiceTest {
         assertEquals(expectedExceptionMessage, thrown.getMessage(), "Exception message was not as expected");
     }
 
+    @DisplayName("loginUser should return user object")
+    @Test
+    void testFindUserByEmail_WhenGivenCorrectCredentials_ShouldReturnUser() {
+
+        // Arrange
+        String testEmail = "test@test.com";
+
+    }
+
 }

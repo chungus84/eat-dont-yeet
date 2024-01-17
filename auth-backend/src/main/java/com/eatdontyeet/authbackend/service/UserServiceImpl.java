@@ -32,11 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public static boolean checkUserDetails(User user) {
-        if (user.getUserName() == null || user.getUserName().isEmpty()) return false;
-        if (user.getFirstName() == null || user.getFirstName().isEmpty()) return false;
-        if (user.getLastName() == null || user.getLastName().isEmpty()) return false;
-        if (user.getEmail() == null || user.getEmail().isEmpty()) return false;
-        if (user.getPassword() == null || user.getPassword().isEmpty()) return false;
+        if (user.getUserName() == null || user.getUserName().trim().isEmpty()) return false;
+        if (user.getFirstName() == null || user.getFirstName().trim().isEmpty()) return false;
+        if (user.getLastName() == null || user.getLastName().trim().isEmpty()) return false;
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) return false;
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) return false;
         return true;
     }
 
