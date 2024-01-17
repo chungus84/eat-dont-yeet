@@ -1,6 +1,7 @@
 package com.eatdontyeet.authbackend.service;
 
 import com.eatdontyeet.authbackend.entity.User;
+import com.eatdontyeet.authbackend.exception.EntityNotFoundException;
 import com.eatdontyeet.authbackend.repository.UserRepository;
 import net.bytebuddy.dynamic.DynamicType;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,7 +97,7 @@ public class UserServiceTest {
         assertEquals(expectedExceptionString, thrown.getMessage());
     }
 
-    @DisplayName("Should return user with a valid UserId")
+    @DisplayName("getUser Should return user with a valid UserId")
     @Test
     void testGetUser_WhenGivenAValidUserId_ShouldReturnTheCorrectUser(){
         String userId = user2.getUserId();
@@ -107,6 +108,19 @@ public class UserServiceTest {
 
         assertEquals(user2.getUserName(), storedUser.getUserName());
         verify(userRepository,times(1)).findByUserId(userId);
+    }
+
+    @DisplayName("get User Should throw an EntityNotFoundException")
+    @Test
+    void testGetUser_WhenGivenAnInvalidUserId_ShouldThrowEntityNotFoundException() {
+        String badUserId = "123";
+        String expectedExceptionMessage = "The user with id 123 does not exist in our records";
+
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, ()-> {
+            userService.getUser(badUserId);
+        }, "Should have thrown an EntityNotFoundException");
+
+        assertEquals(expectedExceptionMessage, thrown.getMessage(), "Exception message was not as expected");
     }
 
 
