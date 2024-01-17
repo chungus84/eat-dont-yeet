@@ -17,13 +17,18 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public User saveUser(User user) {
-        if (user.getUserName() == null || user.getUserName().isEmpty()) throw new IllegalArgumentException("UserName is empty");
-        if (user.getFirstName() == null || user.getFirstName().isEmpty()) throw new IllegalArgumentException("First Name is empty");
-        if (user.getLastName() == null || user.getLastName().isEmpty()) throw new IllegalArgumentException("Last Name is empty");
-        if (user.getEmail() == null || user.getEmail().isEmpty()) throw new IllegalArgumentException("Email is empty");
-        if (user.getUserId() == null || user.getPassword().isEmpty()) throw new IllegalArgumentException("Password is empty");
+    public User saveUser(User user) throws RuntimeException {
+       if (!checkUserDetails(user)) throw new IllegalArgumentException("User details are incomplete");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    public static boolean checkUserDetails(User user) {
+        if (user.getUserName() == null || user.getUserName().isEmpty()) return false;
+        if (user.getFirstName() == null || user.getFirstName().isEmpty()) return false;
+        if (user.getLastName() == null || user.getLastName().isEmpty()) return false;
+        if (user.getEmail() == null || user.getEmail().isEmpty()) return false;
+        if (user.getPassword() == null || user.getPassword().isEmpty()) return false;
+        return true;
     }
 }

@@ -81,7 +81,7 @@ public class UserServiceTest {
     @Test
     void testSaveUser_WhenGivenInvalidUserDetails_ShouldThrowIllegalArgumentException() {
         user2.setFirstName("");
-        String expectedExceptionString = "First Name is empty";
+        String expectedExceptionString = "User details are incomplete";
 
 //        when(userRepository.save(any(User.class))).thenReturn(badUser);
 //        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn(badUser.getPassword());
