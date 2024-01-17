@@ -17,10 +17,10 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public User saveUser(User user) throws RuntimeException {
+    public User saveUser(User user) throws IllegalArgumentException {
        if (!checkUserDetails(user)) throw new IllegalArgumentException("User details are incomplete");
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+       user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+       return userRepository.save(user);
     }
 
     public static boolean checkUserDetails(User user) {
