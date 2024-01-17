@@ -69,5 +69,18 @@ public class UserIntegrationTest {
         }, "Should have thrown PersistenceException");
     }
 
+    @DisplayName("Should throw PersistenceException when userName is too long")
+    @Test
+    void testUserEntity_WhenGivenAUserNameThatIsTooLong_ShouldThrowPersistenceException() {
+
+        // Arrange
+        user.setUserName("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        // Act & Assert
+        assertThrows(PersistenceException.class, ()-> {
+            testEntityManager.persistAndFlush(user);
+        }, "Should have thrown PersistenceException");
+    }
+
 
 }
