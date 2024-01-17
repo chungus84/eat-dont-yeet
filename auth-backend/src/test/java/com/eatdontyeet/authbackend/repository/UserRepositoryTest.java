@@ -89,6 +89,7 @@ public class UserRepositoryTest {
 
         // Assert
         assertTrue(storedUser.isPresent(), "User should be present");
+        assertEquals(storedUser.get().getUserName(), user1.getUserName(), "Username is not as expected");
     }
 
 }
