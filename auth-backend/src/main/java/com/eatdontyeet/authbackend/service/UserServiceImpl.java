@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        if (user.getUserName() == null || user.getUserName().isEmpty()) throw new IllegalArgumentException("UserName is empty");
+        if (user.getFirstName() == null || user.getFirstName().isEmpty()) throw new IllegalArgumentException("First Name is empty");
+        if (user.getLastName() == null || user.getLastName().isEmpty()) throw new IllegalArgumentException("Last Name is empty");
+        if (user.getEmail() == null || user.getEmail().isEmpty()) throw new IllegalArgumentException("Email is empty");
+        if (user.getUserId() == null || user.getPassword().isEmpty()) throw new IllegalArgumentException("Password is empty");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

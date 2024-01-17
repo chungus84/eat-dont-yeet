@@ -51,8 +51,6 @@ public class UserServiceTest {
     @Test
     void testSaveUser_whenGivenUserDetails_ShouldReturnUserObjectAndCallUserRepoSave() {
 
-
-
         when(userRepository.save(any(User.class))).thenReturn(user1);
         when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn("password");
 
@@ -82,17 +80,17 @@ public class UserServiceTest {
     @DisplayName("Should throw exception if user data is empty")
     @Test
     void testSaveUser_WhenGivenInvalidUserDetails_ShouldThrowIllegalArgumentException() {
-        User badUser = new User();
-        badUser.setUserName("");
+        user2.setFirstName("");
+        String expectedExceptionString = "First Name is empty";
 
-        when(userRepository.save(any(User.class))).thenReturn(badUser);
-        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn(badUser.getPassword());
+//        when(userRepository.save(any(User.class))).thenReturn(badUser);
+//        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn(badUser.getPassword());
 
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, ()-> {
-            userService.saveUser(badUser);
+            userService.saveUser(user2);
         }, "Empty and Blank fields should have thrown exception");
 
-        System.out.println(thrown.getMessage());
+        assertEquals(expectedExceptionString, thrown.getMessage());
     }
 
 
