@@ -55,27 +55,31 @@ public class UserServiceTest {
     @Test
     void testSaveUser_whenGivenUserDetails_ShouldReturnUserObjectAndCallUserRepoSave() {
 
+        // Arrange
         when(userRepository.save(any(User.class))).thenReturn(user1);
         when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn("password");
 
+        // Act
         User savedUser = userService.saveUser(user1);
 
-
+        // Assert
         assertEquals(user1.getUserName(), savedUser.getUserName(), "Returned UserName was different than expected");
         verify(userRepository, times(1)).save(user1);
         verify(bCryptPasswordEncoder, times(1)).encode(user1.getPassword());
-
 
     }
 
     @DisplayName("Another saveUser Test")
     @Test
     void testSaveUser_WhenGivenUser2Details_ShouldReturnUserObjectAndCallUserRepoSave(){
-
+        // Arrange
         when(userRepository.save(any(User.class))).thenReturn(user2);
         when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn("passdave");
 
+        // Act
         User savedUser = userService.saveUser(user2);
+
+        // Assert
         assertEquals(user2.getUserName(), savedUser.getUserName(), "Returned UserName was different than expected");
         verify(userRepository, times(1)).save(user2);
         verify(bCryptPasswordEncoder, times(1)).encode(user2.getPassword());
@@ -84,12 +88,12 @@ public class UserServiceTest {
     @DisplayName("Should throw exception if user data is empty")
     @Test
     void testSaveUser_WhenGivenInvalidUserDetails_ShouldThrowIllegalArgumentException() {
+
+        // Arrange
         user2.setFirstName("");
         String expectedExceptionString = "User details are incomplete";
 
-//        when(userRepository.save(any(User.class))).thenReturn(badUser);
-//        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn(badUser.getPassword());
-
+        // Act & Assert
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, ()-> {
             userService.saveUser(user2);
         }, "Empty and Blank fields should have thrown exception");
@@ -100,12 +104,15 @@ public class UserServiceTest {
     @DisplayName("getUser Should return user with a valid UserId")
     @Test
     void testGetUser_WhenGivenAValidUserId_ShouldReturnTheCorrectUser(){
-        String userId = user2.getUserId();
 
+        // Arrange
+        String userId = user2.getUserId();
         when(userRepository.findByUserId(any(String.class))).thenReturn(Optional.of(user2));
 
+        // Act
         User storedUser = userService.getUser(userId);
 
+        // Assert
         assertEquals(user2.getUserName(), storedUser.getUserName());
         verify(userRepository,times(1)).findByUserId(userId);
     }
@@ -113,15 +120,17 @@ public class UserServiceTest {
     @DisplayName("get User Should throw an EntityNotFoundException")
     @Test
     void testGetUser_WhenGivenAnInvalidUserId_ShouldThrowEntityNotFoundException() {
+
+        // Arrange
         String badUserId = "123";
         String expectedExceptionMessage = "The user with id 123 does not exist in our records";
 
+        // Act & Assert
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, ()-> {
             userService.getUser(badUserId);
         }, "Should have thrown an EntityNotFoundException");
 
         assertEquals(expectedExceptionMessage, thrown.getMessage(), "Exception message was not as expected");
     }
-
 
 }
