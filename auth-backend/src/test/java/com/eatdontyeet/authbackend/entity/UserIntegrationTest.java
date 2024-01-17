@@ -82,5 +82,29 @@ public class UserIntegrationTest {
         }, "Should have thrown PersistenceException");
     }
 
+    @DisplayName("Test if userID is duplicate")
+    @Test
+    void testUserEntity_WhenUserIdIsADuplicate_ShouldThrowPersistenceException() {
+
+        // Arrange
+        User newUser = new User();
+        newUser.setUserId("123");
+        newUser.setFirstName("Test");
+        newUser.setLastName("Testington");
+        newUser.setUserName("Testy");
+        newUser.setEmail("test@testy.com");
+        newUser.setPassword("password");
+        testEntityManager.persistAndFlush(newUser);
+
+        user.setUserId("123");
+
+        // Act & Assert
+        assertThrows(PersistenceException.class, ()-> {
+            testEntityManager.persistAndFlush(user);
+        }, "Should have thrown PersistenceException");
+
+
+    }
+
 
 }
