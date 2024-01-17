@@ -9,10 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @DisplayName("UserService Tests")
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +25,9 @@ public class UserServiceTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private User user1;
     private User user2;
@@ -45,11 +50,18 @@ public class UserServiceTest {
     @DisplayName("saveUser Test")
     @Test
     void testSaveUser_whenGivenUserDetails_ShouldReturnUserObjectAndCallUserRepoSave() {
+
+
+
         when(userRepository.save(any(User.class))).thenReturn(user1);
+        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn("password");
 
         User savedUser = userService.saveUser(user1);
 
+
         assertEquals(user1.getUserName(), savedUser.getUserName(), "Returned UserName was different than expected");
+        verify(userRepository, times(1)).save(user1);
+
 
     }
 
