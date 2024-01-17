@@ -106,6 +106,7 @@ public class UserServiceTest {
         User storedUser = userService.getUser(userId);
 
         assertEquals(user2.getUserName(), storedUser.getUserName());
+        verify(userRepository,times(1)).findByUserId(userId);
     }
 
 

@@ -1,6 +1,7 @@
 package com.eatdontyeet.authbackend.service;
 
 import com.eatdontyeet.authbackend.entity.User;
+import com.eatdontyeet.authbackend.exception.EntityNotFoundException;
 import com.eatdontyeet.authbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,13 @@ public class UserServiceImpl implements UserService {
        return userRepository.save(user);
     }
 
+    @Override
+    public User getUser(String userId) throws IllegalArgumentException {
+        if (userId == null || userId.trim().isEmpty()) throw new IllegalArgumentException("Please provide a valid UserId");
+        Optional<User> user = userRepository.findByUserId(userId);
+        return unwrapUser(user, userId);
+    }
+
     public static boolean checkUserDetails(User user) {
         if (user.getUserName() == null || user.getUserName().isEmpty()) return false;
         if (user.getFirstName() == null || user.getFirstName().isEmpty()) return false;
@@ -30,5 +38,10 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() == null || user.getEmail().isEmpty()) return false;
         if (user.getPassword() == null || user.getPassword().isEmpty()) return false;
         return true;
+    }
+
+    public static User unwrapUser(Optional<User> entity, String userId) {
+        if (entity.isPresent()) return entity.get();
+        else throw new EntityNotFoundException(userId, User.class);
     }
 }
