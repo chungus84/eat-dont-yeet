@@ -2,6 +2,7 @@ package com.eatdontyeet.authbackend.service;
 
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.repository.UserRepository;
+import net.bytebuddy.dynamic.DynamicType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,6 +94,18 @@ public class UserServiceTest {
         }, "Empty and Blank fields should have thrown exception");
 
         assertEquals(expectedExceptionString, thrown.getMessage());
+    }
+
+    @DisplayName("Should return user with a valid UserId")
+    @Test
+    void testGetUser_WhenGivenAValidUserId_ShouldReturnTheCorrectUser(){
+        String userId = user2.getUserId();
+
+        when(userRepository.findByUserId(any(String.class))).thenReturn(Optional.of(user2));
+
+        User storedUser = userService.getUser(userId);
+
+        assertEquals(user2.getUserName(), storedUser.getUserName());
     }
 
 
