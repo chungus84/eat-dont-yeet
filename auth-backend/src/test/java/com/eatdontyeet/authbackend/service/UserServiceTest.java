@@ -61,8 +61,38 @@ public class UserServiceTest {
 
         assertEquals(user1.getUserName(), savedUser.getUserName(), "Returned UserName was different than expected");
         verify(userRepository, times(1)).save(user1);
+        verify(bCryptPasswordEncoder, times(1)).encode(user1.getPassword());
 
 
+    }
+
+    @DisplayName("Another saveUser Test")
+    @Test
+    void testSaveUser_WhenGivenUser2Details_ShouldReturnUserObjectAndCallUserRepoSave(){
+
+        when(userRepository.save(any(User.class))).thenReturn(user2);
+        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn("passdave");
+
+        User savedUser = userService.saveUser(user2);
+        assertEquals(user2.getUserName(), savedUser.getUserName(), "Returned UserName was different than expected");
+        verify(userRepository, times(1)).save(user2);
+        verify(bCryptPasswordEncoder, times(1)).encode(user2.getPassword());
+    }
+
+    @DisplayName("Should throw exception if user data is empty")
+    @Test
+    void testSaveUser_WhenGivenInvalidUserDetails_ShouldThrowIllegalArgumentException() {
+        User badUser = new User();
+        badUser.setUserName("");
+
+        when(userRepository.save(any(User.class))).thenReturn(badUser);
+        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn(badUser.getPassword());
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, ()-> {
+            userService.saveUser(badUser);
+        }, "Empty and Blank fields should have thrown exception");
+
+        System.out.println(thrown.getMessage());
     }
 
 

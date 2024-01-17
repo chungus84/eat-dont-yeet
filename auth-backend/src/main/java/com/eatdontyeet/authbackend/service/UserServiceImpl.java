@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    @Autowired
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
