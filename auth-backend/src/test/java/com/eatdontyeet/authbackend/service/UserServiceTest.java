@@ -3,7 +3,6 @@ package com.eatdontyeet.authbackend.service;
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.exception.EntityNotFoundException;
 import com.eatdontyeet.authbackend.repository.UserRepository;
-import net.bytebuddy.dynamic.DynamicType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
@@ -110,7 +108,7 @@ public class UserServiceTest {
         when(userRepository.findByUserId(any(String.class))).thenReturn(Optional.of(user2));
 
         // Act
-        User storedUser = userService.getUser(userId);
+        User storedUser = userService.getUserByUserId(userId);
 
         // Assert
         assertEquals(user2.getUserName(), storedUser.getUserName());
@@ -127,7 +125,7 @@ public class UserServiceTest {
 
         // Act & Assert
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, ()-> {
-            userService.getUser(badUserId);
+            userService.getUserByUserId(badUserId);
         }, "Should have thrown an EntityNotFoundException");
 
         assertEquals(expectedExceptionMessage, thrown.getMessage(), "Exception message was not as expected");

@@ -18,4 +18,5 @@ public class AuthBackendApplication {
 		return new BCryptPasswordEncoder();
 	}
 
+
 }

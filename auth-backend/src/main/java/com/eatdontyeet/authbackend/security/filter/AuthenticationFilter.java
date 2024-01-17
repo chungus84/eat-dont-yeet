@@ -25,9 +25,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private CustomAuthenticationManager customAuthenticationManager;
 
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
@@ -51,7 +48,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityContants.TOKEN_EXPIRATION))
-                .sign(Algorithm.HMAC512(SECRET_KEY));
+                .sign(Algorithm.HMAC512(SecurityContants.SECRET_KEY));
         response.addHeader(SecurityContants.AUTHORIZATION, SecurityContants.BEARER + token);
     }
 }

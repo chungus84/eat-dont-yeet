@@ -25,10 +25,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String userId) throws IllegalArgumentException {
+    public User getUserByUserId(String userId) throws IllegalArgumentException {
         if (userId == null || userId.trim().isEmpty()) throw new IllegalArgumentException("Please provide a valid UserId");
         Optional<User> user = userRepository.findByUserId(userId);
         return unwrapUser(user, userId);
+    }
+
+    @Override
+    public User getUser(String userName) throws IllegalArgumentException {
+        if (userName == null || userName.trim().isEmpty()) throw new IllegalArgumentException("Please provide a userName");
+        Optional<User> user = userRepository.findByUserName(userName);
+        return unwrapUser(user, "404");
     }
 
     public static boolean checkUserDetails(User user) {

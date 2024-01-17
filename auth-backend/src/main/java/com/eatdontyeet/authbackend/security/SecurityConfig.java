@@ -11,25 +11,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.eatdontyeet.authbackend.security.SecurityContants.SECRET_KEY;
+
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig {
 
     CustomAuthenticationManager customAuthenticationManager;
 
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager, SECRET_KEY);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
 
         http
                 .csrf().disable()
                 .cors().disable()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/users/**").permitAll()
+//                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/users/register").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
