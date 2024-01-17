@@ -77,4 +77,18 @@ public class UserRepositoryTest {
         assertEquals(storedUser.get().getCreatedAt(), user2.getCreatedAt(), "Returned CreatedAt date not as expected");
     }
 
+    @DisplayName("Should return user by searching by UserId")
+    @Test
+    void testFindByUserId_WhenGivenAValidUserId_ShouldReturnOptionalUser() {
+
+        // Arrange
+        String userId = user1.getUserId();
+
+        // Act
+        Optional<User> storedUser = userRepository.findByUserId(userId);
+
+        // Assert
+        assertTrue(storedUser.isPresent(), "User should be present");
+    }
+
 }
