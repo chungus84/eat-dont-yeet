@@ -35,7 +35,7 @@ public class User implements Serializable {
 
     @NotBlank(message = "Last name cannot be blank")
     @NonNull
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 50)
     private String lastName;
 
     @NotBlank(message = "UserName cannot be blank")
