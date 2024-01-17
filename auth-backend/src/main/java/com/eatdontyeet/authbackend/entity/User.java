@@ -25,7 +25,7 @@ public class User implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "userid")
+    @Column(name = "userid", unique = true)
     private String userId = UUID.randomUUID().toString();
 
     @NotBlank(message = "First name cannot be blank")
