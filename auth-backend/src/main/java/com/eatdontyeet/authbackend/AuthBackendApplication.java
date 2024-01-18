@@ -1,5 +1,6 @@
 package com.eatdontyeet.authbackend;
 
+import com.eatdontyeet.authbackend.shared.SpringApplicationContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,5 +19,11 @@ public class AuthBackendApplication {
 		return new BCryptPasswordEncoder();
 	}
 
+
+
+	@Bean
+	public SpringApplicationContext springApplicationContext() {
+		return new SpringApplicationContext();
+	}
 
 }
