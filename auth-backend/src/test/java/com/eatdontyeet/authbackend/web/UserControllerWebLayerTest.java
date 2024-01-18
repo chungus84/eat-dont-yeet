@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -60,4 +61,43 @@ public class UserControllerWebLayerTest {
         assertEquals(user.getUserId(), headers.getHeader("userId"), "The returned userId is incorrect");
 
     }
+
+    @DisplayName("First Name is not empty")
+    @Test
+    void testSaveUser_WhenFirstNameIsNotProvided_returns400StatusCode() throws Exception {
+
+        // Arrange
+        user.setFirstName("");
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(user));
+
+        // Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus(), "Incorrect Http status returned");
+    }
+
+    @DisplayName("Returns user based on userId")
+    @Test
+    void testFindUserById_WhenGivenAValidUserID_ShouldReturnAUserName() throws Exception {
+        // Arrange
+        when(userService.getUserByUserId(any(String.class))).thenReturn(user);
+        String userId = user.getUserId();
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/" + userId);
+
+        // Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+
+        // Assert
+        assertEquals(user.getUserName(), mvcResult.getResponse().getContentAsString());
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+
+
+    }
+
 }
