@@ -94,7 +94,7 @@ public class UserControllerIntegrationTest {
 
         // Arrange
         JSONObject loginCredentials = new JSONObject();
-        loginCredentials.put("userName", "TestyTest");
+        loginCredentials.put("email", "test@test.com");
         loginCredentials.put("password", "passtest");
 
         HttpEntity<String> request = new HttpEntity<>((loginCredentials.toString()));
