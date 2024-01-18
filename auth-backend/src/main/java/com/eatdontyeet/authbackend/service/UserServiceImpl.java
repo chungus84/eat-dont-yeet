@@ -45,6 +45,15 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public UserDto getUserByEmail(String email) {
+        if (email == null || email.trim().isEmpty()) throw new IllegalArgumentException("Please provide a valid email");
+        User user = unwrapUser(userRepository.findByEmail(email), "404");
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(user, userDto);
+        return userDto;
+    }
+
     public static boolean checkUserDetails(User user) {
         if (user.getUserName() == null || user.getUserName().trim().isEmpty()) return false;
         if (user.getFirstName() == null || user.getFirstName().trim().isEmpty()) return false;
