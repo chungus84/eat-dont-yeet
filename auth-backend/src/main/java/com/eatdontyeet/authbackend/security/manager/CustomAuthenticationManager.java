@@ -2,6 +2,7 @@ package com.eatdontyeet.authbackend.security.manager;
 
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.service.UserService;
+import com.eatdontyeet.authbackend.shared.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +22,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        User user = userService.getUser(authentication.getName());
+        UserDto user = userService.getUser(authentication.getName());
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             throw new BadCredentialsException("You provided the wrong credentials");
         }

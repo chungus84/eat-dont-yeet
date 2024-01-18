@@ -2,11 +2,13 @@ package com.eatdontyeet.authbackend.web;
 
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.service.UserService;
+import com.eatdontyeet.authbackend.shared.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -85,16 +87,22 @@ public class UserControllerWebLayerTest {
     @Test
     void testFindUserById_WhenGivenAValidUserID_ShouldReturnAUserName() throws Exception {
         // Arrange
-        when(userService.getUserByUserId(any(String.class))).thenReturn(user);
+
+        UserDto userDto = new ModelMapper().map(user, UserDto.class);
+
+
+        when(userService.getUserByUserId(any(String.class))).thenReturn(userDto);
         String userId = user.getUserId();
+
+        String expectedBody = "{\"userId\":\"" + userId + "\",\"userName\":\"testtest\"}";
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/" + userId);
 
         // Act
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
-
+        String actualJSON = mvcResult.getResponse().getContentAsString();
         // Assert
-        assertEquals(user.getUserName(), mvcResult.getResponse().getContentAsString());
+        assertEquals(expectedBody, actualJSON);
         assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
 
 

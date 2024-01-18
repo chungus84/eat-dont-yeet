@@ -2,8 +2,11 @@ package com.eatdontyeet.authbackend.web;
 
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.service.UserService;
+import com.eatdontyeet.authbackend.shared.UserDto;
+import com.eatdontyeet.authbackend.web.response.RestUser;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +20,9 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<String> findByUserId(@PathVariable String userId) {
-        return new ResponseEntity<>(userService.getUserByUserId(userId).getUserName(), HttpStatus.OK);
+    public ResponseEntity<RestUser> findByUserId(@PathVariable String userId) {
+        UserDto userDto = userService.getUserByUserId(userId);
+        return new ResponseEntity<>(new ModelMapper().map(userDto, RestUser.class), HttpStatus.OK);
     }
 
     @PostMapping("/register")

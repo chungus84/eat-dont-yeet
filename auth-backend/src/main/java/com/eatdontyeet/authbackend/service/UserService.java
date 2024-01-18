@@ -1,13 +1,14 @@
 package com.eatdontyeet.authbackend.service;
 
 import com.eatdontyeet.authbackend.entity.User;
+import com.eatdontyeet.authbackend.shared.UserDto;
 
 public interface UserService {
     User saveUser(User user);
 
-    User getUserByUserId(String userId);
+    UserDto getUserByUserId(String userId);
 
-    User getUser(String userName);
+    UserDto getUser(String userName);
 
 
 }

@@ -132,13 +132,12 @@ public class UserControllerIntegrationTest {
 
                 });
 
-        System.out.println(response.getBody());
+//        System.out.println(response.getBody());
 
         assertEquals(HttpStatus.OK,
                 response.getStatusCode(),
                 "Http status code should be 200");
 
-        assertEquals();
     }
 
 

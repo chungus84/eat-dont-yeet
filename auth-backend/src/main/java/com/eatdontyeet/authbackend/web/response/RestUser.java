@@ -1,4 +1,4 @@
-package com.eatdontyeet.authbackend.shared;
+package com.eatdontyeet.authbackend.web.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDto {
-
+public class RestUser {
     private String userId;
     private String userName;
-    private String email;
-    private String password;
-
 }

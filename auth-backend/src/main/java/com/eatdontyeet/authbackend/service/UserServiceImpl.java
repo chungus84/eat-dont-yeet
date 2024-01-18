@@ -3,7 +3,9 @@ package com.eatdontyeet.authbackend.service;
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.exception.EntityNotFoundException;
 import com.eatdontyeet.authbackend.repository.UserRepository;
+import com.eatdontyeet.authbackend.shared.UserDto;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,17 +27,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserId(String userId) throws IllegalArgumentException {
+    public UserDto getUserByUserId(String userId) throws IllegalArgumentException {
         if (userId == null || userId.trim().isEmpty()) throw new IllegalArgumentException("Please provide a valid UserId");
-        Optional<User> user = userRepository.findByUserId(userId);
-        return unwrapUser(user, userId);
+        User user = unwrapUser(userRepository.findByUserId(userId), userId);
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(user, userDto);
+        return userDto;
     }
 
     @Override
-    public User getUser(String userName) throws IllegalArgumentException {
+    public UserDto getUser(String userName) throws IllegalArgumentException {
         if (userName == null || userName.trim().isEmpty()) throw new IllegalArgumentException("Please provide a userName");
-        Optional<User> user = userRepository.findByUserName(userName);
-        return unwrapUser(user, "404");
+        User user = unwrapUser(userRepository.findByUserName(userName), "404");
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(user, userDto);
+        return userDto;
+
     }
 
     public static boolean checkUserDetails(User user) {
