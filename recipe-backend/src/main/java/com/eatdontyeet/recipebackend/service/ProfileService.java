@@ -5,7 +5,7 @@ import com.eatdontyeet.recipebackend.shared.ProfileDto;
 
 public interface ProfileService {
 
-    ProfileDto saveProfile(Profile profile);
+    Profile saveProfile(Profile profile);
 
     ProfileDto getUserByUserId(String userId);
 
