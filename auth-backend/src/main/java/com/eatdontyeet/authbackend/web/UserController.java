@@ -3,6 +3,7 @@ package com.eatdontyeet.authbackend.web;
 import com.eatdontyeet.authbackend.entity.AuthRequest;
 import com.eatdontyeet.authbackend.entity.AuthResponse;
 import com.eatdontyeet.authbackend.entity.User;
+import com.eatdontyeet.authbackend.security.SecurityContants;
 import com.eatdontyeet.authbackend.service.UserService;
 import com.eatdontyeet.authbackend.shared.UserDto;
 import com.eatdontyeet.authbackend.web.response.RestUser;
@@ -42,7 +43,7 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("userName", response.getUserName());
         headers.set("usewrId", response.getUserId());
-        headers.set("Authorization", response.getAccessToken());
+        headers.set("Authorization", SecurityContants.BEARER + response.getAccessToken());
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }

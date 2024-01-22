@@ -5,12 +5,16 @@ import com.eatdontyeet.authbackend.security.SecurityContants;
 import com.eatdontyeet.authbackend.shared.UserDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class JwtGeneratorImpl implements JwtGenerator {
+
+    @Value("${jwt.secret}")
+    private String secret;
 
     @Override
     public Map<String, String> generateToken(UserDto user) {
