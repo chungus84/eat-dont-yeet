@@ -3,6 +3,7 @@ package com.eatdontyeet.recipebackend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class Recipe {
     private long id;
 
     @NonNull
-    @NotEmpty(message = "UserId must not be empty")
     @Column(name = "recipeId", unique = true)
     private Long recipeId;
 
@@ -47,4 +47,15 @@ public class Recipe {
     )
     private Set<Profile> profiles;
 
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", recipeId=" + recipeId +
+                ", title='" + title + '\'' +
+                ", image='" + image + '\'' +
+                ", ingredients=" + ingredients +
+                ", profiles=" + profiles +
+                '}';
+    }
 }

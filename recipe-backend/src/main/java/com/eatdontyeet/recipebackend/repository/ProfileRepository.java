@@ -14,6 +14,5 @@ public interface ProfileRepository extends CrudRepository<Profile, Long> {
 
     Optional<Profile> findByUserName(String userName);
 
-    @Transactional
-    void deleteByUserIdAndRecipeId(String userId, Long recipeId);
+
 }

@@ -13,7 +13,7 @@ public class FilterConfig {
         FilterRegistrationBean filter = new FilterRegistrationBean<>();
         filter.setFilter(new JwtFilter());
 
-        filter.addUrlPatterns(("/profile/user/*"));
+        filter.addUrlPatterns("/profile/user/*");
         return filter;
     }
 }

@@ -10,5 +10,6 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
     Optional<Recipe> findByRecipeId(Long recipeId);
 
+    boolean existsByRecipeId(Long recipeId);
 
 }
