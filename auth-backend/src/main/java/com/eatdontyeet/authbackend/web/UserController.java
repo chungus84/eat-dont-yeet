@@ -42,7 +42,7 @@ public class UserController {
         AuthResponse response = userService.loginUser(request);
         HttpHeaders headers = new HttpHeaders();
         headers.set("userName", response.getUserName());
-        headers.set("usewrId", response.getUserId());
+        headers.set("userId", response.getUserId());
         headers.set("Authorization", SecurityContants.BEARER + response.getAccessToken());
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }

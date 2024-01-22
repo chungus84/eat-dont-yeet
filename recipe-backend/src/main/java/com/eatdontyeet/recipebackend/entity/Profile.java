@@ -1,8 +1,11 @@
 package com.eatdontyeet.recipebackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "profiles")
@@ -27,7 +30,14 @@ public class Profile {
     @Column(name = "userName", unique = true, length = 50)
     private String userName;
 
-
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "profile_recipe",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "recipeId")
+    )
+    private Set<Recipe> recipes;
 
 
 }
