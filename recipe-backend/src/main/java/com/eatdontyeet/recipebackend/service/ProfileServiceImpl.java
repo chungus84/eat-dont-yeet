@@ -6,7 +6,6 @@ import com.eatdontyeet.recipebackend.repository.ProfileRepository;
 import com.eatdontyeet.recipebackend.shared.ProfileDto;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
