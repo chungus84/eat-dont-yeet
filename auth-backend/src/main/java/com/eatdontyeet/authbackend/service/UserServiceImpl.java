@@ -1,13 +1,15 @@
 package com.eatdontyeet.authbackend.service;
 
+import com.eatdontyeet.authbackend.entity.AuthRequest;
+import com.eatdontyeet.authbackend.entity.AuthResponse;
 import com.eatdontyeet.authbackend.entity.User;
+import com.eatdontyeet.authbackend.exception.BadCredentialsException;
 import com.eatdontyeet.authbackend.exception.EntityNotFoundException;
 import com.eatdontyeet.authbackend.repository.UserRepository;
 import com.eatdontyeet.authbackend.shared.UserDto;
 import lombok.AllArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,42 +18,43 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private JwtGenerator jwtGenerator;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     public User saveUser(User user) throws IllegalArgumentException {
        if (!checkUserDetails(user)) throw new IllegalArgumentException("User details are incomplete");
-       user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+       user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(8)));
        return userRepository.save(user);
     }
 
     @Override
     public UserDto getUserByUserId(String userId) throws IllegalArgumentException {
         if (userId == null || userId.trim().isEmpty()) throw new IllegalArgumentException("Please provide a valid UserId");
-        User user = unwrapUser(userRepository.findByUserId(userId), userId);
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(user, userDto);
-        return userDto;
+        return unwrapUser(userRepository.findByUserId(userId), userId);
     }
 
     @Override
     public UserDto getUser(String userName) throws IllegalArgumentException {
         if (userName == null || userName.trim().isEmpty()) throw new IllegalArgumentException("Please provide a userName");
-        User user = unwrapUser(userRepository.findByUserName(userName), "404");
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(user, userDto);
-        return userDto;
+        return unwrapUser(userRepository.findByUserName(userName), "404");
+
+    }
+
+    @Override
+    public AuthResponse loginUser(AuthRequest request) {
+        if (request.getEmail() == null || request.getPassword() == null) throw new IllegalArgumentException("Please provide valid credentials");
+        UserDto userDto = unwrapUser(userRepository.findByEmail(request.getEmail()), "404");
+        if (!BCrypt.checkpw(request.getPassword(), userDto.getPassword())) throw new BadCredentialsException();
+        return  new AuthResponse(userDto.getUserId(), userDto.getUserName(), jwtGenerator.generateToken(userDto).get("token"));
 
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
         if (email == null || email.trim().isEmpty()) throw new IllegalArgumentException("Please provide a valid email");
-        User user = unwrapUser(userRepository.findByEmail(email), "404");
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(user, userDto);
-        return userDto;
+        return unwrapUser(userRepository.findByEmail(email), "404");
     }
 
     public static boolean checkUserDetails(User user) {
@@ -63,8 +66,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public static User unwrapUser(Optional<User> entity, String userId) {
-        if (entity.isPresent()) return entity.get();
-        else throw new EntityNotFoundException(userId, User.class);
+    public static UserDto unwrapUser(Optional<User> entity, String userId) {
+        if (entity.isPresent()) {
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(entity.get(), userDto);
+            return userDto;
+        } else throw new EntityNotFoundException(userId, User.class);
     }
 }

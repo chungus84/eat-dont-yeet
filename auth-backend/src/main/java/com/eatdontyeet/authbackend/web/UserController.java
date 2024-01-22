@@ -1,5 +1,7 @@
 package com.eatdontyeet.authbackend.web;
 
+import com.eatdontyeet.authbackend.entity.AuthRequest;
+import com.eatdontyeet.authbackend.entity.AuthResponse;
 import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.service.UserService;
 import com.eatdontyeet.authbackend.shared.UserDto;
@@ -32,5 +34,15 @@ public class UserController {
         responseHeaders.set("userName", savedUser.getUserName());
         responseHeaders.set("userId", savedUser.getUserId());
         return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody AuthRequest request) {
+        AuthResponse response = userService.loginUser(request);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("userName", response.getUserName());
+        headers.set("usewrId", response.getUserId());
+        headers.set("Authorization", response.getAccessToken());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }
