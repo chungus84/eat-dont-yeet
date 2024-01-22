@@ -14,6 +14,8 @@ import java.util.Optional;
 public class RecipeServiceImpl implements RecipeService {
 
     private RecipeRepository recipeRepository;
+    private ExternalApiService externalApiService;
+
     @Override
     public Recipe saveRecipe(Recipe recipe) {
         return recipeRepository.save(recipe);
@@ -28,6 +30,12 @@ public class RecipeServiceImpl implements RecipeService {
     public List<Recipe> getRecipes() {
         return (List<Recipe>) recipeRepository.findAll();
     }
+
+    public void searchNewRecipe(String[] ingredients) throws Exception {
+        externalApiService.searchNewRecipesByIngredients(ingredients);
+    }
+
+
 
     public static Recipe unwrapRecipe(Optional<Recipe> entity, Long recipeId) {
         if (entity.isPresent()) return entity.get();

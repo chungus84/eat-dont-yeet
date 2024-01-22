@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,11 +34,9 @@ public class Recipe {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "userIngredientCount")
-    private byte userIngredientCount;
+    @Column(name = "ingredients")
+    private List<String> ingredients;
 
-    @Column(name = "missedIngredientCount")
-    private byte missedIngredientCount;
 
     @JsonIgnore
     @ManyToMany
