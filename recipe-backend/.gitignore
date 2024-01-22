@@ -5,8 +5,8 @@ target/
 !**/src/test/**/target/
 src/main/resources/application.properties
 src/test/resources/application.properties
-src/main/java/com/eatdontyeet/authbackend/security/SecurityConstants.java
-src/main/java/com/eatdontyeet/authbackend/security/SecurityContants.java
+src/main/java/com/eatdontyeet/recipebackend/security/SecurityConstants.java
+src/main/java/com/eatdontyeet/recipebackend/security/SecurityContants.java
 
 
 ### STS ###
