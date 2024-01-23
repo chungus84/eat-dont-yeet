@@ -11,10 +11,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.asynchttpclient.Response;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -42,51 +44,45 @@ public class RecipeServiceImpl implements RecipeService {
 
     public List<Recipe> searchNewRecipe(String[] ingredients) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        List<Recipe> recipes = new ArrayList<>();
         Response res = externalApiService.searchNewRecipesByIngredients(ingredients);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         List<RecipeResponse> recipeList = mapper.readValue(res.getResponseBody(), new TypeReference<List<RecipeResponse>>(){});
-
-        Recipe recipe;
-
-        for (RecipeResponse ele : recipeList) {
-            recipe = new Recipe(ele.getId(), ele.getTitle());
-            recipe.setImage(ele.getImage());
-            List<String> missed = new ArrayList<>();
-            List<String> used = new ArrayList<>();
-
-            for (Object el : ele.getMissedIngredients()) {
-                Ingredient ingredient = mapper.convertValue(el, Ingredient.class);
-                missed.add(ingredient.getName());
-            }
-            for (Object el : ele.getUsedIngredients()) {
-                Ingredient ingredient = mapper.convertValue(el, Ingredient.class);
-                used.add(ingredient.getName());
-            }
-            used.addAll(missed);
-            recipe.setIngredients(used);
-            recipes.add(recipe);
-        }
+        List<Recipe> recipes = convertResponseToRecipes(recipeList);
 
         for(Recipe rec : recipes) {
             if (recipeRepository.existsByRecipeId(rec.getRecipeId())) {
                 continue;
             } else recipeRepository.save(rec);
         }
-
         return recipes;
-
-
-
-
-
-
     }
-
-
 
     public static Recipe unwrapRecipe(Optional<Recipe> entity, Long recipeId) {
         if (entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(recipeId.toString(), Recipe.class);
     }
+
+    public static List<String> getIngredientsList(List<Map<String, Object>> ingredients) {
+        List<String> ingredientNameList = new ArrayList<>();
+        for (Map<String, Object> ingredient : ingredients) {
+            Ingredient ingredientObj = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .convertValue(ingredient, Ingredient.class);
+            ingredientNameList.add(ingredientObj.getName());
+        }
+        return ingredientNameList;
+    }
+
+    public static List<Recipe> convertResponseToRecipes(List<RecipeResponse> recipeResponseList) {
+        List<Recipe> recipes = new ArrayList<>();
+        for (RecipeResponse recipeResponse : recipeResponseList) {
+            List<String> missed = getIngredientsList(recipeResponse.getMissedIngredients());
+            List<String> used = getIngredientsList(recipeResponse.getUsedIngredients());
+            used.addAll(missed);
+            Recipe recipe = new Recipe(recipeResponse.getId(), recipeResponse.getTitle(), recipeResponse.getImage(), used);
+            recipes.add(recipe);
+        }
+        return recipes;
+    }
+
 }

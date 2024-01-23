@@ -31,9 +31,11 @@ public class Recipe {
     @Column(name = "title")
     private String title;
 
+    @NonNull
     @Column(name = "image")
     private String image;
 
+    @NonNull
     @Column(name = "ingredients")
     private List<String> ingredients;
 
