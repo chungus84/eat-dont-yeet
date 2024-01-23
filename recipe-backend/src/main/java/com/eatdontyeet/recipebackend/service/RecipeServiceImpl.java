@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 import org.asynchttpclient.Response;
 import org.modelmapper.ModelMapper;
@@ -29,7 +30,10 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe saveRecipe(Recipe recipe) {
-        return recipeRepository.save(recipe);
+        if (!recipeRepository.existsByRecipeId(recipe.getRecipeId())) {
+            return recipeRepository.save(recipe);
+        }
+        throw new EntityExistsException("This Recipe already exists");
     }
 
     @Override
@@ -50,9 +54,12 @@ public class RecipeServiceImpl implements RecipeService {
         List<Recipe> recipes = convertResponseToRecipes(recipeList);
 
         for(Recipe rec : recipes) {
-            if (recipeRepository.existsByRecipeId(rec.getRecipeId())) {
+            try {
+                saveRecipe(rec);
+            } catch (EntityExistsException ex) {
+                System.out.println(ex.getMessage());
                 continue;
-            } else recipeRepository.save(rec);
+            }
         }
         return recipes;
     }
