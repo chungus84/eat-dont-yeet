@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.rmi.AccessException;
 import java.rmi.ServerException;
 
 public class JwtFilter extends GenericFilterBean {
@@ -28,7 +29,7 @@ public class JwtFilter extends GenericFilterBean {
             chain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             if(authHeader == null || !authHeader.startsWith(SecurityConstants.BEARER)) {
-                throw  new ServerException("An exception occured");
+                throw new ServerException("An exception occurred");
             }
         }
         final String token = authHeader.substring(7);

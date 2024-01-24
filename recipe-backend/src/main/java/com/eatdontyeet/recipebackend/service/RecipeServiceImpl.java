@@ -58,7 +58,6 @@ public class RecipeServiceImpl implements RecipeService {
                 saveRecipe(rec);
             } catch (EntityExistsException ex) {
                 System.out.println(ex.getMessage());
-                continue;
             }
         }
         return recipes;

@@ -9,4 +9,5 @@ public interface ExternalApiService {
 
     Response searchNewRecipesByIngredients(String[] ingredients) throws Exception;
 
+    Response findRecipeDetail(Long[] recipeId) throws Exception;
 }
