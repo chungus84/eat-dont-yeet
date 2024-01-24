@@ -7,6 +7,7 @@ import org.asynchttpclient.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.function.Predicate;
 
 public class ExternalApiServiceImpl implements ExternalApiService {
@@ -28,7 +29,23 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .execute().get();
 
         return response;
+    }
 
+    @Override
+    public Response findRecipeDetail(List<Long> recipeIds) throws Exception {
+        StringBuilder paramString = new StringBuilder();
+
+        AsyncHttpClient client = Dsl.asyncHttpClient();
+        for (Long id : recipeIds) {
+            System.out.println(id);
+            paramString.append("%2C%20").append(id.toString());
+        }
+
+        Response response = client.prepareGet(SecurityConstants.BULK_RECIPE_INFO_END_POINT + paramString)
+                .setHeader(SecurityConstants.RAPID_API_KEY_HEADER, SecurityConstants.RAPID_API_KEY)
+                .setHeader(SecurityConstants.RAPID_API_HOST_HEADER, SecurityConstants.RAPID_API_HOST)
+                .execute().get();
+        return response;
 
     }
 }

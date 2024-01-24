@@ -1,11 +1,13 @@
 package com.eatdontyeet.recipebackend.entity;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -24,6 +26,7 @@ public class Ingredient {
     private String originalName;
     private List<String> meta;
     private String image;
+
 
     @Override
     public String toString() {

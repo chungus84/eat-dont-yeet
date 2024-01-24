@@ -1,6 +1,7 @@
 package com.eatdontyeet.recipebackend.web;
 
 import com.eatdontyeet.recipebackend.entity.Recipe;
+import com.eatdontyeet.recipebackend.entity.RecipeDetail;
 import com.eatdontyeet.recipebackend.service.RecipeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,4 +27,13 @@ public class RecipeController {
     public ResponseEntity<List<Recipe>> findAllRecipes() {
         return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.OK);
     }
+
+//    @PostMapping("/details")
+//    public ResponseEntity<List<RecipeDetail>> getRecipeDetails( recipeIds) throws Exception {
+//       List<RecipeDetail> recipeDetails = recipeService.getRecipeDetails(recipeIds);
+//       return new ResponseEntity<>(recipeDetails, HttpStatus.OK);
+//
+//    }
+
+
 }
