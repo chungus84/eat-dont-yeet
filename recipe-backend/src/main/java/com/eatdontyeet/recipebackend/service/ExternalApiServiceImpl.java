@@ -27,6 +27,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .setHeader(SecurityConstants.RAPID_API_KEY_HEADER, SecurityConstants.RAPID_API_KEY)
                 .setHeader(SecurityConstants.RAPID_API_HOST_HEADER, SecurityConstants.RAPID_API_HOST)
                 .execute().get();
+        client.close();
 
         return response;
     }
@@ -45,6 +46,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .setHeader(SecurityConstants.RAPID_API_KEY_HEADER, SecurityConstants.RAPID_API_KEY)
                 .setHeader(SecurityConstants.RAPID_API_HOST_HEADER, SecurityConstants.RAPID_API_HOST)
                 .execute().get();
+        client.close();
         return response;
 
     }
