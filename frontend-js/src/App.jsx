@@ -14,7 +14,9 @@ function App() {
     const navigate = useNavigate();
 
     const loginHandler = async userCredentials => {
+
         const externalDataCallResult = await authApi.loginUser(userCredentials);
+
         if (externalDataCallResult?.error) {
             const errorObj = { ...externalDataCallResult.error };
             errorObj.message = `There was a problem: ${externalDataCallResult.error.message}`;
