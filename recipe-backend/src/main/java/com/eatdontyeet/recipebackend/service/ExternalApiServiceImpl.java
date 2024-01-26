@@ -38,7 +38,6 @@ public class ExternalApiServiceImpl implements ExternalApiService {
 
         AsyncHttpClient client = Dsl.asyncHttpClient();
         for (Long id : recipeIds) {
-            System.out.println(id);
             paramString.append("%2C%20").append(id.toString());
         }
 
