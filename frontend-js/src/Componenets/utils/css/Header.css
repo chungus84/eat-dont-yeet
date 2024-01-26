@@ -1,6 +1,8 @@
-.nav-container {
+.navbar-brand.logo {
     background-color: rgb(19, 19, 154);
     color: azure;
+    padding-left: 24px;
+
 }
 
 .nav-container>div>h2>span {
