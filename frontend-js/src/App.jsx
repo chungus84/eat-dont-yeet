@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Header from './Componenets/utils/Header'
-import Home from './Componenets/Home'
+import Header from './Components/utils/Header'
+import Home from './Components/Home'
 
 function App() {
+
+    const [error, setError] = useState({});
+    const [profile, setProfile] = useState({});
+
+    const navigate = useNavigate();
+
+    const loginHandler = async userCredentials => {
+
+    }
+
 
 
     return (
