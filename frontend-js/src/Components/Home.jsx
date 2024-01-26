@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
 import LoginForm from "./utils/LoginForm";
 
-const Home = () => {
+import PropTypes from 'prop-types';
+
+const Home = ({ submitAction }) => {
 
     const [login, setLogin] = useState(false)
 
@@ -35,13 +37,17 @@ const Home = () => {
 
                 )}
                 {login && (
-                    <LoginForm />
+                    <LoginForm submitAction={submitAction} />
                 )}
 
             </div>
         </>
 
     )
+}
+
+Home.propTypes = {
+    submitAction: PropTypes.func.isRequired
 }
 
 export default Home
