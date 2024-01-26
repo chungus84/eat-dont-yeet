@@ -12,10 +12,12 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -38,12 +40,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody  AuthRequest request) {
+
         AuthResponse response = userService.loginUser(request);
+        System.out.println(response.getAccessToken());
         HttpHeaders headers = new HttpHeaders();
-        headers.set("userName", response.getUserName());
-        headers.set("userId", response.getUserId());
-        headers.set("Authorization", SecurityContants.BEARER + response.getAccessToken());
+        headers.set("username", response.getUserName());
+        headers.set("userid", response.getUserId());
+        headers.set("authorization", SecurityContants.BEARER + response.getAccessToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }

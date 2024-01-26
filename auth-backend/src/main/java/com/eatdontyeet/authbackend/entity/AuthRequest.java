@@ -1,12 +1,10 @@
 package com.eatdontyeet.authbackend.entity;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class AuthRequest {
