@@ -16,7 +16,7 @@ export const loginUser = async userCredentials => {
                     "Access-Control-Allow-Origin": "*"
                 }
             });
-        console.log(loginRes);
+
         if (!loginRes.headers?.userid && !loginRes.status !== 200) {
             throw new Error("Credentials do not match")
         }
