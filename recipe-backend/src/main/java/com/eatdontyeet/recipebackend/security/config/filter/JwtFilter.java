@@ -14,6 +14,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 import java.rmi.AccessException;
 import java.rmi.ServerException;
+import java.util.Enumeration;
 
 public class JwtFilter extends GenericFilterBean {
 
@@ -21,9 +22,11 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         final String authHeader = httpServletRequest.getHeader("Authorization");
+
         if("OPTIONS".equals(httpServletRequest.getMethod())) {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             chain.doFilter(httpServletRequest, httpServletResponse);

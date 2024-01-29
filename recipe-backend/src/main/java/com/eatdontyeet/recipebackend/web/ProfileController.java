@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin( maxAge = 3600)
 @RequestMapping("/profile")
 public class ProfileController {
 
@@ -19,12 +20,13 @@ public class ProfileController {
 
     @PostMapping("/new")
     public ResponseEntity<Profile> saveProfile(@Valid @RequestBody Profile profile) {
+        System.out.println(profile);
         Profile savedProfile = profileService.saveProfile(profile);
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ProfileDto> findByUserId(@PathVariable String userId) {
+    public ResponseEntity<ProfileDto> findByUserId(@RequestHeader(name = "Authorization") String authorization, @PathVariable String userId ) {
         ProfileDto profileDto = profileService.getUserByUserId(userId);
         return new ResponseEntity<>(profileDto, HttpStatus.OK);
     }

@@ -1,15 +1,8 @@
 package com.eatdontyeet.recipebackend.service;
 
-import com.eatdontyeet.recipebackend.entity.Recipe;
 import com.eatdontyeet.recipebackend.security.SecurityConstants;
 import org.asynchttpclient.*;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import java.util.function.Predicate;
-
 public class ExternalApiServiceImpl implements ExternalApiService {
 
 
