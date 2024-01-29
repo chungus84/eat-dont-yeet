@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Routes, Route } from 'react-router-dom';
 import './App.css';
+
 import Header from './Components/utils/Header';
 import Home from './Components/Home';
 import Profile from './Components/Profile';
 import RecipeFeed from './Components/RecipeFeed';
+import RecipeInstructions from './Components/RecipeInstructions';
 
 import * as authApi from './ApiCalls/AuthApiCalls';
 import * as recipeAPI from './ApiCalls/recipeApiCalls';
@@ -68,6 +70,17 @@ function App() {
         return recipes;
     }
 
+    const getRecipeInstructions = async recipeId => {
+        const externalDataCallResult = await recipeAPI.getRecipeDetails(recipeId);
+        if (externalDataCallResult?.error) {
+            const errorObj = { ...externalDataCallResult.error };
+            errorObj.message = `There was a problem: ${externalDataCallResult.error.message}`;
+            setError(errorObj)
+        }
+        const recipe = externalDataCallResult?.data ? externalDataCallResult.data : {};
+        return recipe;
+    }
+
     useEffect(() => {
         if (localStorage.getItem('user')) {
             const currentUser = getCurrentUser();
@@ -84,6 +97,7 @@ function App() {
                 <Route index element={<Home submitAction={loginHandler} signUpFunc={signUpHandler} />} />
                 <Route path='profile/:id' element={<Profile data={profile} />} />
                 <Route path='recipe/all' element={<RecipeFeed recipeFunc={getRecipeBank} />} />
+                <Route path='recipe/:id' element={<RecipeInstructions recipeFun={getRecipeInstructions} />} />
 
             </Routes>
 
