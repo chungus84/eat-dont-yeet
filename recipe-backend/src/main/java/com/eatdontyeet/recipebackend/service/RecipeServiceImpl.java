@@ -46,6 +46,11 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    public RecipeDetail getRecipeDetail(Long recipeId) {
+        return unwrapRecipeDetail(recipeDetailsRepository.findByRecipeId(recipeId), recipeId);
+    }
+
+    @Override
     public List<Recipe> getRecipes() {
         return (List<Recipe>) recipeRepository.findAll();
     }
@@ -92,6 +97,11 @@ public class RecipeServiceImpl implements RecipeService {
     public static Recipe unwrapRecipe(Optional<Recipe> entity, Long recipeId) {
         if (entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(recipeId.toString(), Recipe.class);
+    }
+
+    public static RecipeDetail unwrapRecipeDetail(Optional<RecipeDetail> entity, Long recipeId) {
+        if (entity.isPresent()) return entity.get();
+        else throw new EntityNotFoundException(recipeId.toString(), RecipeDetail.class);
     }
 
     public static List<String> getIngredientsList(List<Map<String, Object>> ingredients) {

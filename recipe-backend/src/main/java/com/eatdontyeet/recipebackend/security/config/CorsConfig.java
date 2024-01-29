@@ -13,8 +13,11 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
                 .allowedMethods("PUT", "DELETE", "POST", "PUT", "GET", "HEAD")
-                .allowedHeaders("*")
-                .exposedHeaders("Authorization")
+                .allowedHeaders("CustomAuth", "Authorization", "header3", "Origin", "Access-Control-Allow-Origin", "Content-Type",
+                        "Accept", "Origin, Accept", "X-Requested-With",
+                        "Access-Control-Request-Method", "Access-Control-Request-Headers", "username", "userid")
+                .exposedHeaders("CustomAuth", "Origin", "Content-Type", "Accept", "Authorization", "userid", "username",
+                        "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
                 .allowCredentials(true);
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin( maxAge = 3600)
 @RequestMapping("/recipes")
 public class RecipeController {
 
@@ -26,6 +27,11 @@ public class RecipeController {
     @GetMapping("/all")
     public ResponseEntity<List<Recipe>> findAllRecipes() {
         return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{recipeId}")
+    public ResponseEntity<RecipeDetail> findByRecipeId(@PathVariable Long recipeId) {
+        return new ResponseEntity<>(recipeService.getRecipeDetail(recipeId), HttpStatus.OK);
     }
 
 //    @PostMapping("/details")

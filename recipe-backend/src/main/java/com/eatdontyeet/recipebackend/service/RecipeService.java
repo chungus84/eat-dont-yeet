@@ -18,4 +18,6 @@ public interface RecipeService {
     List<Recipe> searchNewRecipe(String[] ingredients) throws Exception;
 
     List<RecipeDetail> getRecipeDetails(List<Long> recipeIds) throws Exception;
+
+    RecipeDetail getRecipeDetail(Long recipeId);
 }
