@@ -21,8 +21,6 @@ public class UserServiceImpl implements UserService {
     private JwtGenerator jwtGenerator;
     private ProfileAPIService profileAPIService;
 
-
-
     @Override
     public User saveUser(User user) throws Exception {
        if (!checkUserDetails(user)) throw new IllegalArgumentException("User details are incomplete");
