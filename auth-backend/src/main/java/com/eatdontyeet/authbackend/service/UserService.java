@@ -6,7 +6,7 @@ import com.eatdontyeet.authbackend.entity.User;
 import com.eatdontyeet.authbackend.shared.UserDto;
 
 public interface UserService {
-    User saveUser(User user);
+    User saveUser(User user) throws Exception;
 
     UserDto getUserByUserId(String userId);
 

@@ -19,14 +19,17 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private JwtGenerator jwtGenerator;
+    private ProfileAPIService profileAPIService;
 
 
 
     @Override
-    public User saveUser(User user) throws IllegalArgumentException {
+    public User saveUser(User user) throws Exception {
        if (!checkUserDetails(user)) throw new IllegalArgumentException("User details are incomplete");
        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(8)));
-       return userRepository.save(user);
+       User savedUser = userRepository.save(user);
+       profileAPIService.saveProfile(user.getUserId(), user.getUserName());
+       return savedUser;
     }
 
     @Override

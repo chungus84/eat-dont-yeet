@@ -12,4 +12,5 @@ import lombok.Setter;
 public class ProfileDto {
     private String userName;
     private String userId;
+
 }

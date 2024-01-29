@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> saveUser(@Valid @RequestBody User user) throws Exception {
         User savedUser = userService.saveUser(user);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("userName", savedUser.getUserName());

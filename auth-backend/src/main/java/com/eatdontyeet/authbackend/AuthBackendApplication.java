@@ -2,6 +2,8 @@ package com.eatdontyeet.authbackend;
 
 import com.eatdontyeet.authbackend.service.JwtGenerator;
 import com.eatdontyeet.authbackend.service.JwtGeneratorImpl;
+import com.eatdontyeet.authbackend.service.ProfileAPIService;
+import com.eatdontyeet.authbackend.service.ProfileAPIServiceImpl;
 import com.eatdontyeet.authbackend.shared.SpringApplicationContext;
 import com.eatdontyeet.authbackend.shared.UserDto;
 import org.springframework.boot.SpringApplication;
@@ -33,15 +35,8 @@ public class AuthBackendApplication {
 		return new SpringApplicationContext();
 	}
 
-//	@Bean
-//	CorsConfigurationSource corsConfigurationSource() {
-//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		CorsConfiguration config = new CorsConfiguration();
-//		source.registerCorsConfiguration("/**", config.applyPermitDefaultValues());
-//		config.setExposedHeaders(Arrays.asList("CustomAuth", "Origin", "Content-Type", "Accept", "Authorization",
-//				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-//
-//		return source;
-//	}
+
+	@Bean
+	public ProfileAPIServiceImpl profileAPIService() {return new ProfileAPIServiceImpl();}
 
 }
