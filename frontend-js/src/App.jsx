@@ -41,6 +41,7 @@ function App() {
     }
 
     const signUpHandler = async user => {
+        console.log(user);
         const externalDataCallResult = await authApi.signUpUser(user);
         if (externalDataCallResult?.error) {
             const errorObj = { ...externalDataCallResult.error };

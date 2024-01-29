@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import User from './model/user.model.js';
 
 
@@ -14,7 +14,9 @@ const SignUpForm = ({ submitAction }) => {
     const handleSignUp = event => {
         event.preventDefault();
         if (password === repeatPassword) {
+
             const userToSubmit = new User(firstName, lastName, email, userName, password)
+            console.log(userToSubmit);
             submitAction(userToSubmit);
             setFirstName("");
             setLastName("");
@@ -29,11 +31,16 @@ const SignUpForm = ({ submitAction }) => {
     }
 
 
+    useEffect(() => {
+
+    })
+
+
     return (
         <div className="container w-50">
-            <form aria-label='form'>
+            <form aria-label='form' onSubmit={handleSignUp}>
                 <br />
-                <div className="form-group">
+                <div className="form-group" >
                     <input type="text" className='form-control' name="firstName" id="firstName" placeholder='First Name' value={firstName} onChange={event => { setFirstName(event.target.value) }} />
                 </div>
                 <br />
