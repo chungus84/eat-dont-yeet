@@ -64,7 +64,8 @@ function App() {
             errorObj.message = `There was a problem: ${externalDataCallResult.error.message}`;
             setError(errorObj)
         }
-        console.log(externalDataCallResult);
+        const recipes = externalDataCallResult?.data ? externalDataCallResult.data : [];
+        return recipes;
     }
 
     useEffect(() => {
