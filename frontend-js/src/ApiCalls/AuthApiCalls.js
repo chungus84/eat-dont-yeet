@@ -31,9 +31,8 @@ export const loginUser = async userCredentials => {
         }
         localStorage.setItem(`user`, JSON.stringify(userObj))
 
-        findProfileByUserId(userId);
 
-        return { status: loginRes.status }
+        return { status: loginRes.status, userId: userId }
 
 
     } catch (err) {
@@ -59,6 +58,21 @@ export const findProfileByUserId = async userId => {
             status: err.response?.status,
             error: {
                 type: `get`,
+                message: err.response?.message
+            }
+        }
+    }
+}
+
+export const signUpUser = async user => {
+    try {
+        const res = await axios.post(`${import.meta.env.VITE_AUTHURL}/users/register`, user, { headers: authHeader() })
+        console.log(res);
+    } catch (err) {
+        return {
+            status: err.response?.status,
+            error: {
+                type: `post`,
                 message: err.response?.message
             }
         }

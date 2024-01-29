@@ -2,8 +2,9 @@ import { useState, useEffect } from "react"
 import LoginForm from "./utils/LoginForm";
 
 import PropTypes from 'prop-types';
+import SignUpForm from "./utils/SignUpForm";
 
-const Home = ({ submitAction }) => {
+const Home = ({ submitAction, signUpFunc }) => {
 
     const [login, setLogin] = useState(false)
 
@@ -39,6 +40,9 @@ const Home = ({ submitAction }) => {
                 {login && (
                     <LoginForm submitAction={submitAction} />
                 )}
+                {!login && (
+                    <SignUpForm submitAction={signUpFunc} />
+                )}
 
             </div>
         </>
@@ -47,7 +51,8 @@ const Home = ({ submitAction }) => {
 }
 
 Home.propTypes = {
-    submitAction: PropTypes.func.isRequired
+    submitAction: PropTypes.func.isRequired,
+    signUpFunc: PropTypes.func.isRequired
 }
 
 export default Home

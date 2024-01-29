@@ -22,6 +22,31 @@ function App() {
             errorObj.message = `There was a problem: ${externalDataCallResult.error.message}`;
             setError(errorObj)
         }
+        const userId = externalDataCallResult?.userId ? externalDataCallResult.userId : "";
+        getProfileHandler(userId);
+
+
+    }
+
+    const getProfileHandler = async userId => {
+        const externalDataCallResult = await authApi.findProfileByUserId(userId);
+        if (externalDataCallResult?.error) {
+            const errorObj = { ...externalDataCallResult.error };
+            error.message = `There was a problem: ${externalDataCallResult.error.message}`;
+            setError(errorObj)
+        }
+        const userProfile = externalDataCallResult.data?.userName ? externalDataCallResult.data : {}
+        setProfile(userProfile)
+
+    }
+
+    const signUpHandler = async user => {
+        const externalDataCallResult = await authApi.signUpUser(user);
+        if (externalDataCallResult?.error) {
+            const errorObj = { ...externalDataCallResult.error };
+            errorObj.message = `There was a problem: ${externalDataCallResult.error.message}`;
+            setError(errorObj)
+        }
         console.log(externalDataCallResult);
     }
 
@@ -31,7 +56,8 @@ function App() {
         <>
             <Header />
             <Routes>
-                <Route index element={<Home submitAction={loginHandler} />} />
+                <Route index element={<Home submitAction={loginHandler} signUpFunc={signUpHandler} />} />
+
             </Routes>
 
 
